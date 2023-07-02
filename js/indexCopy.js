@@ -36,21 +36,18 @@ form.addEventListener("submit", (event) => {
 
   console.log(listaUsuarios);
 
-  if (usuario.value.trim() == "") {
-    usuario.classList.add("erro");
-    control = false;
+  if (usuario.value.trim() == "" | senha.value.trim() == "") {
+    event.preventDefault();
   } else {
 
     listaUsuarios.forEach(function (itemUsuario) {
       if (itemUsuario.email.trim().toUpperCase() === usuario.toUpperCase() && itemUsuario.senha.trim().toUpperCase() === senha.toUpperCase()) {
-        //* aqui insere no session store. */
+        sessionStorage
       } else {
         event.preventDefault();
       }
     });
   }
-
-  return control;
 });
 
 //// ATIVIDADE
