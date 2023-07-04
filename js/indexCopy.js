@@ -29,25 +29,19 @@ let botaoLogar = document.querySelector("#form-botao");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  let control = true;
   let usuario = document.querySelector("#email").value;
   let senha = document.querySelector("#senha").value;
   // validar se campos não estão nulos.
 
   console.log(listaUsuarios);
 
-  if (usuario.value.trim() == "" | senha.value.trim() == "") {
-    event.preventDefault();
-  } else {
-
-    listaUsuarios.forEach(function (itemUsuario) {
-      if (itemUsuario.email.trim().toUpperCase() === usuario.toUpperCase() && itemUsuario.senha.trim().toUpperCase() === senha.toUpperCase()) {
-        sessionStorage
-      } else {
-        event.preventDefault();
-      }
-    });
-  }
+  listaUsuarios.forEach(function (itemUsuario) {
+    if ( itemUsuario.email.trim().toUpperCase() === usuario.toUpperCase() && itemUsuario.senha.trim().toUpperCase() === senha.toUpperCase() ) {
+      //* aqui insere no session store. */
+    } else {
+      event.preventDefault();
+    }
+  });
 });
 
 //// ATIVIDADE
@@ -56,7 +50,7 @@ form.addEventListener("submit", (event) => {
 
 // 1) Quando a pessoa faz o login, deve-se validar login e senha não estão nulos.
 
-// 2) Se não estiverem, deve-se verificar se estão na lista dos dados.
+// 2)  Se não estiverem, deve-se verificar se estão na lista dos dados.
 
 // 2) Se estiver correta deve ser armazenado as informações do usuário (guardar um json do usuário (Não pode armazenar senha)) no localStorage.
 
