@@ -33,7 +33,7 @@ const objObrigatorio = `
   <small> * Campo obrigatório  </small>
 </div>`;
 
-const chechInputs = (email, senha) => {
+const checkInputs = (email, senha) => {
   let control = true;
 
   if (email.value.trim() == "") {
@@ -61,7 +61,7 @@ form.addEventListener("submit", (event) => {
   let usuario = document.querySelector("#email");
   let senha = document.querySelector("#senha");
 
-  if (!chechInputs(usuario, senha)) {
+  if (!checkInputs(usuario, senha)) {
     event.preventDefault();
   } else {
     listaUsuarios.forEach(function (itemUsuario) {
@@ -69,10 +69,12 @@ form.addEventListener("submit", (event) => {
         //* aqui insere no session store. */
 
         const cadastro = {
-          id: sessionStorage.getItem("id"),
-          nome: sessionStorage.getItem("nome"),
-          usuario: sessionStorage.getItem("usuario"),
-        }
+          id: sessionStorage.setItem("id"),
+          nome: sessionStorage.setItem("nome"),
+          usuario: sessionStorage.setItem("usuario"),
+        };
+
+        console.log(cadastro);
     
       } else {
         event.preventDefault();
@@ -81,12 +83,11 @@ form.addEventListener("submit", (event) => {
   }
 });
 
-window.onload = () => {
+/*window.onload = () => {
 
   listaUsuarios.forEach((id) => {
-
   });
-};
+};*/
 
 //// ATIVIDADE
 
