@@ -18,10 +18,8 @@ const usuarios = [
     senha: "12345",
   },
 ];
-//deve-se trabalhar com essa lista e converte-la para objetos.
-const usuariosJSON = JSON.stringify(usuarios);
 
-/* JSON.parse()*/
+const usuariosJSON = JSON.stringify(usuarios);
 const listaUsuarios = JSON.parse(usuariosJSON);
 
 let form = document.querySelector("form");
@@ -36,14 +34,14 @@ const objObrigatorio = `
 const checkInputs = (email, senha) => {
   let control = true;
 
-  if (email.value.trim() == "") {
+  if (email.value.trim() === "") {
     email.classList.add("erro");
     control = false;
 
     email.parentElement.innerHTML += objObrigatorio;
   }
 
-  if (senha.value.trim() == "") {
+  if (senha.value.trim() === "") {
     senha.classList.add("erro");
     control = false;
 
@@ -51,56 +49,63 @@ const checkInputs = (email, senha) => {
   }
 
   return control;
-}
+};
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  let id = listaUsuarios.id;
-  let nome = listaUsuarios.name;
   let usuario = document.querySelector("#email");
   let senha = document.querySelector("#senha");
 
   if (!checkInputs(usuario, senha)) {
     event.preventDefault();
   } else {
-    listaUsuarios.forEach(function (itemUsuario) {
-      if (itemUsuario.email.trim().toUpperCase() === usuario.toUpperCase() && itemUsuario.senha.trim().toUpperCase() === senha.toUpperCase()) {
-        //* aqui insere no session store. */
+    let usuarioValue = usuario.value;
+    let senhaValue = senha.value;
 
-        const cadastro = {
-          id: sessionStorage.setItem("id"),
-          nome: sessionStorage.setItem("nome"),
-          usuario: sessionStorage.setItem("usuario"),
-        };
+    let usuarioEncontrado = listaUsuarios.find(
+      (itemUsuario) =>
+        itemUsuario.email.trim().toUpperCase() === usuarioValue.toUpperCase() &&
+        itemUsuario.senha.trim().toUpperCase() === senhaValue.toUpperCase()
+    );
 
-        console.log(cadastro);
-    
-      } else {
-        event.preventDefault();
-      }
-    });
+    if (usuarioEncontrado) {
+      const cadastro = {
+        id: usuarioEncontrado.id,
+        nome: usuarioEncontrado.name,
+        email: usuarioEncontrado.email,
+      };
+
+      localStorage.setItem("cadastro", JSON.stringify(cadastro));
+
+      const mensagemBoasVindas = `Bem-vind@ ${usuarioEncontrado.name}`;
+      const mensagemBoasVindasElement = document.querySelector("#mensagem-boas-vindas");
+      mensagemBoasVindasElement.textContent = mensagemBoasVindas;
+
+      // Redirecionar para a página de boas-vindas
+      window.location.href = "./welcome.html?mensagem=" + encodeURIComponent(mensagemBoasVindas);
+    } else {
+      event.preventDefault();
+    }
   }
 });
 
-/*window.onload = () => {
+window.addEventListener("load", () => {
+  const cadastroArmazenado = localStorage.getItem("cadastro");
 
-  listaUsuarios.forEach((id) => {
-  });
-};*/
+  if (cadastroArmazenado) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const mensagem = urlParams.get("mensagem");
 
-//// ATIVIDADE
+    const mensagemBoasVindasElement = document.querySelector("#mensagem-boas-vindas");
+    mensagemBoasVindasElement.textContent = mensagem;
+  }
+});
 
-/// Passo a passo:
+const botaoSair = document.querySelector("#botao-sair");
 
-// 1) Quando a pessoa faz o login, deve-se validar login e senha não estão nulos. ok
-
-// 2) Se não estiverem, deve-se verificar se estão na lista dos dados.
-
-// 3) Se estiver correta deve ser armazenado as informações do usuário (guardar um json do usuário (Não pode armazenar senha)) no localStorage.
-
-// 4) Deve-se redirecionar  para uma nova página em que haverá um mensagem de "Bem-vind@ Fulano" e um botao de inserir.
-
-// 5) Sempre que a página for recarrega (onload), deve-se validar a informação do usuário (verificar se existe um usuário na sessão).
-
-// 6) Caso o usuário clique em sair, deve ser redirecionado para a página de login e removido do localStorage.
+botaoSair.addEventListener("click", () => {
+  localStorage.removeItem("cadastro");
+  window.location.href = "./index.html";
+});
