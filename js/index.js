@@ -17,6 +17,12 @@ const usuarios = [
     email: "fabiano.meira@gmail.com",
     senha: "12345",
   },
+  {
+    id: 4,
+    name: "Manoel Gomes",
+    email: "manoel.gomes@gmail.com",
+    senha: "12345",
+  },
 ];
 
 const usuariosJSON = JSON.stringify(usuarios);
@@ -79,33 +85,25 @@ form.addEventListener("submit", (event) => {
       localStorage.setItem("cadastro", JSON.stringify(cadastro));
 
       const mensagemBoasVindas = `Bem-vind@ ${usuarioEncontrado.name}`;
-      const mensagemBoasVindasElement = document.querySelector("#mensagem-boas-vindas");
-      mensagemBoasVindasElement.textContent = mensagemBoasVindas;
+      const urlNovaPagina = `./welcome.html?mensagem=${encodeURIComponent(mensagemBoasVindas)}`;
 
-      // Redirecionar para a página de boas-vindas
-      window.location.href = "./welcome.html?mensagem=" + encodeURIComponent(mensagemBoasVindas);
-    } else {
-      event.preventDefault();
+      window.location.href = urlNovaPagina;
     }
   }
 });
 
-window.addEventListener("load", () => {
-  const cadastroArmazenado = localStorage.getItem("cadastro");
+//// ATIVIDADE
 
-  if (cadastroArmazenado) {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const mensagem = urlParams.get("mensagem");
+/// Passo a passo:
 
-    const mensagemBoasVindasElement = document.querySelector("#mensagem-boas-vindas");
-    mensagemBoasVindasElement.textContent = mensagem;
-  }
-});
+// 1) Quando a pessoa faz o login, deve-se validar login e senha não estão nulos. 
 
-const botaoSair = document.querySelector("#botao-sair");
+// 2) Se não estiverem, deve-se verificar se estão na lista dos dados.
 
-botaoSair.addEventListener("click", () => {
-  localStorage.removeItem("cadastro");
-  window.location.href = "./index.html";
-});
+// 3) Se estiver correta deve ser armazenado as informações do usuário (guardar um json do usuário (Não pode armazenar senha)) no localStorage.
+
+// 4) Deve-se redirecionar  para uma nova página em que haverá um mensagem de "Bem-vind@ Fulano" e um botao de inserir.
+
+// 5) Sempre que a página for recarrega (onload), deve-se validar a informação do usuário (verificar se existe um usuário na sessão).
+
+// 6) Caso o usuário clique em sair, deve ser redirecionado para a página de login e removido do localStorage.
